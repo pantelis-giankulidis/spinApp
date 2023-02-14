@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react"
 import DisplayResults from "../DisplayResults/DisplayResults";
-import Dropdown from "../Dropdown/Dropdown";
+
+import Dropdown from 'react-bootstrap/Dropdown';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -73,9 +76,26 @@ const Dashboard = () => {
 
                     <div className="input-container">
                         <form className="input-container" onSubmit={handleSubmit}>
-                            <span>
-                                <label>LOCATION</label>
-                                <Dropdown placeHolder="Location" options={locations}></Dropdown>
+                            <span className="upperLine">
+                                <label className="upperLine">LOCATION</label>
+                                <select>
+                                    <option value="ATHENS">ΑΘΗΝΑ</option>
+                                    <option value="THESSALONIKI">ΘΕΣ/ΝΙΚΗ</option>
+                                    <option value="PATRA">ΠΑΤΡΑ</option>
+                                    <option value="CHANIA">ΧΑΝΙΑ</option>
+                                </select>
+                                <label className="upperLine">ΤΥΠΟΣ ΚΤΙΡΙΟΥ</label>
+                                <select>
+                                    <option value="STUDIO">STUDIO</option>
+                                    <option value="LOFT">LOFT</option>
+                                    <option value="APARTMENT">APARTMENT</option>
+                                    <option value="MAISONETTE">MAISONETTE</option>
+                                </select>
+                                <label className="upperLine">ΔΙΑΘΕΣΙΜΟΤΗΤΑ</label>
+                                <select>
+                                    <option value="SALE">ΠΩΛΗΣΗ</option>
+                                    <option value="RENT">ΕΝΟΙΚΙΑΣΗ</option>
+                                </select>
                             </span>
 
                             <span>
@@ -92,14 +112,7 @@ const Dashboard = () => {
                                     <input type="text" value={higherSize} onChange={(change) => setHigherSize(change.text)} />
                                 </span>
                             </div>
-                            <span>
-                                <label>ΔΙΑΘΕΣΙΜΟΤΗΤΑ</label>
-                                <Dropdown placeHolder="Availability" options={availability}></Dropdown>
-                            </span>
-                            <span>
-                                <label>ΤΥΠΟΣ ΚΤΙΡΙΟΥ</label>
-                                <Dropdown placeHolder="Type" options={type}></Dropdown>
-                            </span>
+
                             <div className="input-item">
                                 <label>ΕΤΟΣ ΚΑΤΑΣΚΕΥΗΣ ΜΕΓΑΛΥΤΕΡΟ ΑΠΟ:</label>
                                 <input type="text" value={year} onChange={(change) => setYear(change.text)} />

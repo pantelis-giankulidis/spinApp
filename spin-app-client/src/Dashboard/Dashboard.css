@@ -64,3 +64,7 @@ input[type="submit"]:hover {
     gap: 8px;
     margin: 14px;
 }
+
+.upperLine {
+    margin-left: 15px;
+}

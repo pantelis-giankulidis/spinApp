@@ -11,7 +11,7 @@ const Icon = () => {
 };
 
 const Dropdown = ({ placeHolder, options }) => {
-    const [showMenu, setShowMenu] = useState(false);
+    const [showMenu, setShowMenu] = useState(true);
     const [selectedValue, setSelectedValue] = useState(null);
 
     useEffect(() => {
@@ -23,8 +23,8 @@ const Dropdown = ({ placeHolder, options }) => {
     });
 
     const handleClick = (e) => {
-        e.stopPropagation();
-        setShowMenu(!showMenu);
+
+        setShowMenu(true);
     };
 
     const getDisplay = () => {

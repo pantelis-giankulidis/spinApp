@@ -119,8 +119,6 @@ public class PropertyQueryService {
                                 ? yearsString
                                 : " AND " + yearsString);
 
-        System.out.println(sBuilder.toString());
-
         /* Execute the query */
         Iterable<Property> result = propertyRepository.executeSearchQuery(sBuilder.toString());
 
