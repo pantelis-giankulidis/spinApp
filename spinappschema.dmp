@@ -1,0 +1,302 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.12 (Ubuntu 12.12-0ubuntu0.20.04.1)
+-- Dumped by pg_dump version 12.12 (Ubuntu 12.12-0ubuntu0.20.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: availability; Type: TYPE; Schema: public; Owner: root
+--
+
+CREATE TYPE public.availability AS ENUM (
+    'SALE',
+    'RENT'
+);
+
+
+ALTER TYPE public.availability OWNER TO root;
+
+--
+-- Name: location; Type: TYPE; Schema: public; Owner: root
+--
+
+CREATE TYPE public.location AS ENUM (
+    'ATHENS',
+    'THESSALONIKI',
+    'PATRA',
+    'CHANIA'
+);
+
+
+ALTER TYPE public.location OWNER TO root;
+
+--
+-- Name: logtype; Type: TYPE; Schema: public; Owner: root
+--
+
+CREATE TYPE public.logtype AS ENUM (
+    'INFO',
+    'WARN',
+    'ERROR'
+);
+
+
+ALTER TYPE public.logtype OWNER TO root;
+
+--
+-- Name: ptype; Type: TYPE; Schema: public; Owner: root
+--
+
+CREATE TYPE public.ptype AS ENUM (
+    'APARTMENT',
+    'STUDIO',
+    'LOFT',
+    'MAISONETTE'
+);
+
+
+ALTER TYPE public.ptype OWNER TO root;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: logging; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public.logging (
+    id integer NOT NULL,
+    tstamp timestamp without time zone DEFAULT now(),
+    type public.logtype,
+    message character varying(1000)
+);
+
+
+ALTER TABLE public.logging OWNER TO root;
+
+--
+-- Name: logging_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public.logging_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.logging_id_seq OWNER TO root;
+
+--
+-- Name: logging_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public.logging_id_seq OWNED BY public.logging.id;
+
+
+--
+-- Name: property; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public.property (
+    id integer NOT NULL,
+    location public.location,
+    price integer,
+    squaremeters integer,
+    availability public.availability,
+    type public.ptype[],
+    year integer,
+    "type[]" smallint[],
+    ptypes smallint[],
+    type1 boolean,
+    studio boolean,
+    loft boolean,
+    apartment boolean,
+    maisonette boolean
+);
+
+
+ALTER TABLE public.property OWNER TO root;
+
+--
+-- Name: property_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public.property_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.property_id_seq OWNER TO root;
+
+--
+-- Name: property_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public.property_id_seq OWNED BY public.property.id;
+
+
+--
+-- Name: property_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public.property_seq
+    START WITH 1
+    INCREMENT BY 50
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.property_seq OWNER TO root;
+
+--
+-- Name: property_types; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public.property_types (
+    property_prop_id bigint NOT NULL,
+    ptype smallint,
+    property_id bigint NOT NULL,
+    type smallint,
+    "type[]" smallint,
+    types_order integer NOT NULL
+);
+
+
+ALTER TABLE public.property_types OWNER TO root;
+
+--
+-- Name: querylog; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public.querylog (
+    id integer NOT NULL,
+    query character varying(2000),
+    numresults integer,
+    tstamp timestamp without time zone DEFAULT now()
+);
+
+
+ALTER TABLE public.querylog OWNER TO root;
+
+--
+-- Name: querylog_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public.querylog_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.querylog_id_seq OWNER TO root;
+
+--
+-- Name: querylog_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public.querylog_id_seq OWNED BY public.querylog.id;
+
+
+--
+-- Name: querylog_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public.querylog_seq
+    START WITH 1
+    INCREMENT BY 50
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.querylog_seq OWNER TO root;
+
+--
+-- Name: logging id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.logging ALTER COLUMN id SET DEFAULT nextval('public.logging_id_seq'::regclass);
+
+
+--
+-- Name: property id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.property ALTER COLUMN id SET DEFAULT nextval('public.property_id_seq'::regclass);
+
+
+--
+-- Name: querylog id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.querylog ALTER COLUMN id SET DEFAULT nextval('public.querylog_id_seq'::regclass);
+
+
+--
+-- Name: logging logging_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.logging
+    ADD CONSTRAINT logging_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: property property_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.property
+    ADD CONSTRAINT property_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: querylog querylog_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.querylog
+    ADD CONSTRAINT querylog_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: property_types fk7jx7lcenu5bnyrftyfwoha9bj; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.property_types
+    ADD CONSTRAINT fk7jx7lcenu5bnyrftyfwoha9bj FOREIGN KEY (property_prop_id) REFERENCES public.property(id);
+
+
+--
+-- Name: property_types fkldbeafdmx69hdqq3uvix2njkw; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.property_types
+    ADD CONSTRAINT fkldbeafdmx69hdqq3uvix2njkw FOREIGN KEY (property_id) REFERENCES public.property(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
